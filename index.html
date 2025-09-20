@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ru" data-color-scheme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Serious Dating — Платформа серьёзных знакомств</title>
+  <meta name="description" content="Платформа для серьёзных отношений: умные алгоритмы, верификация профилей и тёплое сообщество. Присоединяйтесь через Telegram‑бота и наш канал." />
+  <meta name="theme-color" content="#1f3b63" />
+  <meta property="og:title" content="Serious Dating — Платформа серьёзных знакомств" />
+  <meta property="og:description" content="Серьёзные отношения без лишней суеты. Надёжность, тепло и забота в каждом шаге." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ru_RU" />
+  <style>
+    /* =====================
+       БАЗА И ПАЛИТРА
+       Все отступы и размеры в rem
+       ===================== */
+    :root {
+      /* Мягкая, доверительная палитра */
+      --bg: oklch(98% 0.01 95);
+      --surface: oklch(97% 0.02 20);
+      --surface-2: oklch(95% 0.03 230);
+      --text: oklch(22% 0.03 250);
+      --muted: oklch(45% 0.04 245);
+      --primary: oklch(45% 0.08 260); /* глубокий синий */
+      --primary-contrast: oklch(98% 0 0);
+      --accent: oklch(80% 0.08 20); /* нежный румянец */
+      --ok: oklch(65% 0.14 160);
+      --warn: oklch(80% 0.12 80);
+      --shadow: 0 0.2rem 1.2rem rgba(10, 22, 40, 0.08);
+      --radius: 1.25rem;
+      --container: 72rem; /* ~1152px */
+    }
+
+    html { box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: inherit; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Inter, Ubuntu, Cantarell, 'Noto Sans', 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--text);
+      background:
+        radial-gradient(120rem 60rem at 10% -10%, oklch(96% 0.02 20), transparent 60%),
+        radial-gradient(100rem 50rem at 110% -20%, oklch(94% 0.04 250 / .4), transparent 60%),
+        var(--bg);
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    .container { max-width: var(--container); margin-inline: auto; padding: 0 1.25rem; }
+    .section { padding: 5rem 0; }
+    .section.sm { padding: 3.5rem 0; }
+
+    h1, h2, h3 { line-height: 1.2; margin: 0 0 1rem; }
+    h1 { font-size: 2.25rem; letter-spacing: -0.02em; }
+    h2 { font-size: 1.75rem; letter-spacing: -0.01em; }
+    h3 { font-size: 1.25rem; }
+    p { margin: 0 0 1rem; }
+
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* Доступность: фокус */
+    :focus-visible { outline: 0.2rem solid var(--accent); outline-offset: 0.2rem; border-radius: 0.4rem; }
+
+    /* ШАПКА */
+    .header { position: sticky; top: 0; z-index: 50; background: color-mix(in oklch, var(--surface), white 10%); backdrop-filter: blur(8px); box-shadow: var(--shadow); }
+    .header .row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 0.9rem 0; }
+    .brand { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 700; letter-spacing: 0.02em; }
+    .brand .logo { inline-size: 1.8rem; block-size: 1.8rem; }
+    .nav { display: flex; gap: 1.2rem; align-items: center; }
+    .nav a { padding: 0.5rem 0.6rem; border-radius: 0.6rem; }
+    .nav a:hover { background: oklch(97% 0.02 240); text-decoration: none; }
+
+    /* КНОПКИ */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem; padding: 0.9rem 1.2rem; border-radius: 999rem; border: 0; cursor: pointer; font-weight: 600; text-decoration: none; box-shadow: var(--shadow); transition: transform .25s ease, box-shadow .25s ease, background .25s ease; }
+    .btn:hover { transform: translateY(-0.1rem); box-shadow: 0 0.4rem 1.6rem rgba(10,22,40,.12); }
+    .btn-primary { background: var(--primary); color: var(--primary-contrast); }
+    .btn-accent { background: var(--accent); color: oklch(26% 0.04 250); }
+    .btn-ghost { background: transparent; color: var(--primary); border: 0.08rem solid color-mix(in oklch, var(--primary), white 70%); }
+
+    /* HERO */
+    .hero { position: relative; }
+    .hero .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: center; }
+    .tag { display: inline-flex; align-items: center; gap: 0.5rem; background: oklch(96% 0.03 250); color: var(--muted); border-radius: 999rem; padding: 0.35rem 0.8rem; font-size: 0.9rem; margin-bottom: 0.8rem; }
+    .hero h1 strong { color: var(--primary); }
+    .lead { font-size: 1.125rem; color: color-mix(in oklch, var(--text), white 25%); max-width: 45ch; }
+    .cta { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.2rem; }
+
+    .hero-visual { position: relative; block-size: 24rem; border-radius: var(--radius); overflow: hidden; background:
+      radial-gradient(60rem 40rem at 110% -20%, oklch(92% 0.04 230), transparent 60%),
+      linear-gradient(160deg, oklch(97% 0.02 20), oklch(95% 0.03 250));
+      box-shadow: var(--shadow);
+    }
+    .blob { position: absolute; inset: auto auto 0 0; transform: translate(-30%, 20%); inline-size: 26rem; block-size: 26rem; border-radius: 50%; background: radial-gradient(closest-side, color-mix(in oklch, var(--accent), white 15%), transparent 60%); filter: blur(20px); opacity: .6; animation: float 12s ease-in-out infinite alternate; }
+    @keyframes float { to { transform: translate(-5%, -5%); opacity: .9; } }
+
+    .hero-fig { position: absolute; inset: 0; display: grid; place-items: center; }
+    .mock-card { inline-size: min(90%, 30rem); background: var(--surface); border-radius: 1rem; padding: 1rem; box-shadow: var(--shadow); border: 0.06rem solid oklch(92% 0.02 240); }
+    .mock-card header { display:flex; align-items:center; gap:.6rem; margin-bottom:.8rem; }
+    .avatar { inline-size: 2.2rem; block-size: 2.2rem; border-radius: 50%; background: linear-gradient(135deg, oklch(85% 0.09 25), oklch(85% 0.07 260)); }
+    .mock-chip { margin-left: auto; font-size: .85rem; background: oklch(95% 0.03 230); color: var(--muted); padding: .2rem .6rem; border-radius: .6rem; }
+    .mock-line { block-size: .7rem; background: oklch(92% 0.02 240); border-radius: .4rem; margin: .45rem 0; }
+
+    /* ОСОБЕННОСТИ */
+    .features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .feature { background: var(--surface); border: 0.06rem solid oklch(92% 0.02 240); border-radius: 1rem; padding: 1.2rem; box-shadow: var(--shadow); transition: transform .25s ease; }
+    .feature:hover { transform: translateY(-0.15rem); }
+    .fi { inline-size: 2rem; block-size: 2rem; }
+    .feature p { color: color-mix(in oklch, var(--text), white 25%); }
+
+    /* ИСТОРИИ УСПЕХА */
+    .stories { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .story { background: var(--surface); border-radius: 1rem; padding: 1.2rem; border: 0.06rem solid oklch(92% 0.02 240); box-shadow: var(--shadow); }
+    .story blockquote { margin: 0; font-size: 1.05rem; }
+    .story footer { display:flex; align-items:center; gap:.6rem; margin-top: .9rem; color: var(--muted); }
+    .story .ph { inline-size: 2.2rem; block-size: 2.2rem; border-radius: 50%; background: linear-gradient(135deg, oklch(85% 0.09 25), oklch(85% 0.07 260)); }
+
+    /* ДОП. СЕКЦИИ */
+    .trust { display:grid; grid-template-columns: 1.1fr 1fr; gap: 2rem; align-items: center; }
+    .list { display:grid; gap:.6rem; }
+    .list li { display:flex; align-items:flex-start; gap:.6rem; }
+    .list svg { inline-size: 1.1rem; block-size: 1.1rem; margin-top:.25rem; color: var(--ok); }
+
+    /* CTA НИЖЕ */
+    .cta-panel { background: linear-gradient(180deg, oklch(96% 0.02 230), var(--surface)); border: 0.06rem solid oklch(92% 0.02 240); border-radius: var(--radius); padding: 2rem; box-shadow: var(--shadow); text-align: center; }
+
+    /* ПОДВАЛ */
+    footer { background: color-mix(in oklch, var(--surface), white 5%); border-top: 0.06rem solid oklch(92% 0.02 240); }
+    .foot { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; }
+    .legal { color: var(--muted); font-size: .95rem; }
+
+    /* РЕСПОНСИВ */
+    @media (max-width: 62rem) { /* ~992px */
+      .hero .wrap { grid-template-columns: 1fr; }
+      .hero-visual { block-size: 20rem; }
+      .trust { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 48rem) { /* ~768px */
+      .features, .stories { grid-template-columns: 1fr; }
+      h1 { font-size: 2rem; }
+    }
+
+    /* АНИМАЦИИ ВХОДА */
+    .reveal { opacity: 0; transform: translateY(1rem); }
+    .reveal.in-view { opacity: 1; transform: translateY(0); transition: opacity .6s ease, transform .6s ease; }
+    .delay-1 { transition-delay: .06s; }
+    .delay-2 { transition-delay: .12s; }
+    .delay-3 { transition-delay: .18s; }
+
+    /* Предпочтения по сниженной анимации */
+    @media (prefers-reduced-motion: reduce) {
+      .btn:hover { transform: none; }
+      .reveal, .reveal.in-view { transition: none; transform: none; opacity: 1; }
+      .blob { animation: none; }
+    }
+  </style>
+</head>
+
+<body data-telegram-bot-url="https://t.me/your_bot_here" data-telegram-channel-url="https://t.me/your_channel_here">
+  <a class="visually-hidden" href="#main">Перейти к содержимому</a>
+
+  <!-- ШАПКА -->
+  <header class="header">
+    <div class="container row">
+      <div class="row">
+        <a class="brand" href="#" aria-label="Serious Dating — на главную">
+          <svg class="logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12 21s-7.2-4.35-9.6-8.16C.93 10.13 2.08 6.8 5 6.12c2-.47 3.69.68 4.5 2.02.81-1.34 2.5-2.49 4.5-2.02 2.92.68 4.07 4.01 2.6 6.72C19.2 16.65 12 21 12 21Z"/></svg>
+          Serious Dating
+        </a>
+      </div>
+      <nav class="nav" aria-label="Главная навигация">
+        <a href="#features">Возможности</a>
+        <a href="#stories">Истории</a>
+        <a href="#cta">Присоединиться</a>
+        <a class="btn btn-ghost" id="navBot" target="_blank" rel="noopener">Telegram‑бот</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero section">
+      <div class="container wrap">
+        <div class="reveal">
+          <span class="tag">Серьёзные отношения • Тёплое сообщество</span>
+          <h1>Знакомства <strong>для долгих отношений</strong> — без лишнего шума</h1>
+          <p class="lead">Мы соединяем людей, готовых к осознанным отношениям. Умные алгоритмы, проверенные анкеты и уважительное общение помогают найти того самого человека.</p>
+          <div class="cta">
+            <a class="btn btn-primary" id="heroBot" aria-label="Открыть Telegram‑бота" target="_blank" rel="noopener">
+              <svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9.6 13.8L9.4 18c.4 0 .6-.2.8-.4l1.9-1.8 3.9 2.8c.7.4 1.2.2 1.4-.6l2.6-12.3c.2-.9-.3-1.3-1-.9L3.6 9c-.9.3-.9.9-.2 1.2l4.2 1.3 9.8-6.2-7.8 8.5Z"/></svg>
+              Перейти в Telegram‑бота
+            </a>
+            <a class="btn btn-accent" id="heroChannel" aria-label="Открыть Telegram‑канал" target="_blank" rel="noopener">Наш Telegram‑канал</a>
+          </div>
+        </div>
+        <div class="hero-visual reveal delay-2" aria-hidden="true">
+          <div class="blob"></div>
+          <div class="hero-fig">
+            <!-- Мокап «карточки совместимости» -->
+            <div class="mock-card" role="img" aria-label="Пример карточки совместимости">
+              <header>
+                <div class="avatar" aria-hidden="true"></div>
+                <div>
+                  <strong>Алина, 29</strong>
+                  <div style="color:var(--muted); font-size:.95rem">Психолог, любит походы</div>
+                </div>
+                <span class="mock-chip">Совпадение 92%</span>
+              </header>
+              <div class="mock-line"></div>
+              <div class="mock-line" style="width:90%"></div>
+              <div class="mock-line" style="width:70%"></div>
+              <div class="mock-line" style="width:80%"></div>
+              <div class="mock-line" style="width:60%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ОСОБЕННОСТИ -->
+    <section id="features" class="section">
+      <div class="container">
+        <h2 class="reveal">Почему у нас получается</h2>
+        <p class="reveal delay-1" style="max-width:60ch;color:color-mix(in oklch, var(--text), white 25%)">Комбинируем технологии и человеческое тепло: ваши ценности и цели становятся главным сигналом при подборе пары.</p>
+        <div class="features" style="margin-top:1.2rem">
+          <article class="feature reveal">
+            <svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 1 0 .001 20.001A10 10 0 0 0 12 2Zm1 14h-2v-2h2v2Zm0-4h-2V6h2v6Z"/></svg>
+            <h3>Честные анкеты</h3>
+            <p>Верификация фото и базовых данных снижает количество случайных совпадений и экономит ваше время.</p>
+          </article>
+          <article class="feature reveal delay-1">
+            <svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 3 2 9l10 6 10-6-10-6Zm0 9.5L4.5 8.2v6.6L12 19l7.5-4.2V8.2L12 12.5Z"/></svg>
+            <h3>Алгоритм совместимости</h3>
+            <p>Сопоставляем ценности, ритм жизни и ожидания. Чем глубже анкета, тем точнее рекомендации.</p>
+          </article>
+          <article class="feature reveal delay-2">
+            <svg class="fi" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 1.8 22.2 6l-2 12.2L12 22.2 3.8 18.2 1.8 6 12 1.8Zm0 4.1 6.5 2.5-1.3 7.9L12 18.9 6.8 16.3l-1.3-7.9L12 5.9Z"/></svg>
+            <h3>Безопасное общение</h3>
+            <p>Модерация и инструменты защиты от навязчивости. Вы контролируете границы и темп диалога.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ДОВЕРИЕ/ПРОЦЕСС -->
+    <section class="section">
+      <div class="container trust">
+        <div class="reveal">
+          <h2>Как это работает</h2>
+          <p style="max-width:60ch;color:color-mix(in oklch, var(--text), white 25%)">Три шага к знакомству: аккуратно, уважительно и без давления. Мы сделаем сложное — простым, а важное — заметным.</p>
+          <ol class="list" style="margin-top:.8rem">
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4Z"/></svg>
+              <div>
+                <strong>Шаг 1. Telegram‑бот</strong>
+                <div>Заполните короткую анкету в боте: цели, ценности, ритм жизни.</div>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4Z"/></svg>
+              <div>
+                <strong>Шаг 2. Подбор совпадений</strong>
+                <div>Алгоритм предложит 3–7 релевантных контактов. Никакого бесконечного свайпа.</div>
+              </div>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M9 16.2 4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4Z"/></svg>
+              <div>
+                <strong>Шаг 3. Диалог по правилам уважения</strong>
+                <div>Чёткие настройки приватности, опции «паузы» и мягкие напоминания.
+                </div>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <figure class="hero-visual reveal delay-1" role="img" aria-label="Тёплая иллюстрация доверия и близости">
+          <div class="blob"></div>
+          <div class="hero-fig">
+            <div class="mock-card" style="inline-size:min(92%,28rem)">
+              <header>
+                <div class="avatar" aria-hidden="true"></div>
+                <div>
+                  <strong>Алексей, 34</strong>
+                  <div style="color:var(--muted); font-size:.95rem">Инженер, волонтёр</div>
+                </div>
+                <span class="mock-chip">Совпадение 88%</span>
+              </header>
+              <div class="mock-line" style="width:85%"></div>
+              <div class="mock-line" style="width:75%"></div>
+              <div class="mock-line" style="width:65%"></div>
+              <div class="mock-line" style="width:70%"></div>
+              <div class="mock-line" style="width:50%"></div>
+            </div>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- ИСТОРИИ УСПЕХА (опционально) -->
+    <section id="stories" class="section">
+      <div class="container">
+        <h2 class="reveal">Истории людей</h2>
+        <p class="reveal delay-1" style="max-width:60ch;color:color-mix(in oklch, var(--text), white 25%)">Нам пишут пары, которые встретились здесь. Это вдохновляет и задаёт тон общению в сообществе.</p>
+        <div class="stories" style="margin-top:1.2rem">
+          <article class="story reveal">
+            <blockquote>«Мы оба пришли за осознанными отношениями и быстро это почувствовали. Через три месяца съехались, через год расписались.»</blockquote>
+            <footer>
+              <div class="ph" aria-hidden="true"></div>
+              <span>Мария и Дмитрий</span>
+              <span style="margin-left:auto;color:var(--muted)">Москва</span>
+            </footer>
+          </article>
+          <article class="story reveal delay-1">
+            <blockquote>«Ценности и быт совпали на удивление легко. Алгоритм точно угадал наш ритм жизни.»</blockquote>
+            <footer>
+              <div class="ph" aria-hidden="true"></div>
+              <span>Алина и Роман</span>
+              <span style="margin-left:auto;color:var(--muted)">Минск</span>
+            </footer>
+          </article>
+          <article class="story reveal delay-2">
+            <blockquote>«Было спокойно и понятно на каждом шаге. Спасибо за тёплую модерацию и вежливые напоминания.»</blockquote>
+            <footer>
+              <div class="ph" aria-hidden="true"></div>
+              <span>Екатерина и Игорь</span>
+              <span style="margin-left:auto;color:var(--muted)">СПб</span>
+            </footer>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA НИЖЕ -->
+    <section id="cta" class="section sm">
+      <div class="container">
+        <div class="cta-panel reveal">
+          <h2>Готовы познакомиться осознанно?</h2>
+          <p style="max-width:60ch;margin-inline:auto;color:color-mix(in oklch, var(--text), white 25%)">Подключайтесь к нашему Telegram‑боту — всего несколько вопросов, и вы увидите первые совпадения. Для новостей и анонсов подписывайтесь на канал.</p>
+          <div class="cta" style="justify-content:center; margin-top:1rem">
+            <a class="btn btn-primary" id="ctaBot" target="_blank" rel="noopener" aria-label="Открыть Telegram‑бота">Перейти в Telegram‑бота</a>
+            <a class="btn btn-ghost" id="ctaChannel" target="_blank" rel="noopener" aria-label="Открыть Telegram‑канал">Наш Telegram‑канал</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ПОДВАЛ -->
+  <footer class="section sm">
+    <div class="container foot">
+      <div class="legal">
+        © <span id="year"></span> Serious Dating. 18+. Мы бережно относимся к приватности и правилам уважительного общения.
+      </div>
+      <div class="cta" style="justify-content:flex-end">
+        <a class="btn btn-ghost" id="footBot" target="_blank" rel="noopener">Telegram‑бот</a>
+        <a class="btn btn-ghost" id="footChannel" target="_blank" rel="noopener">Telegram‑канал</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =====================
+    // МАЛЕНЬКОЕ ЯДРО UX
+    // =====================
+    (function(){
+      const $ = (s, r = document) => r.querySelector(s);
+      const setYear = () => { $('#year').textContent = String(new Date().getFullYear()); };
+
+      // Подхватываем ссылки из data-атрибутов на <body>
+      const botUrl = document.body.getAttribute('data-telegram-bot-url') || '#';
+      const channelUrl = document.body.getAttribute('data-telegram-channel-url') || '#';
+      ['heroBot','navBot','ctaBot','footBot'].forEach(id => { const a = $('#'+id); if (a) a.href = botUrl; });
+      ['heroChannel','ctaChannel','footChannel'].forEach(id => { const a = $('#'+id); if (a) a.href = channelUrl; });
+
+      // Анимации появления блоков (IntersectionObserver)
+      const io = ('IntersectionObserver' in window) ? new IntersectionObserver((entries)=>{
+        entries.forEach(e => { if(e.isIntersecting) { e.target.classList.add('in-view'); io.unobserve(e.target); } });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.1 }) : null;
+      if (io) document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+      else document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+
+      // Трекинг кликов (простой console.log как заглушка)
+      const track = (name) => console.log('[track]', name, new Date().toISOString());
+      ['heroBot','navBot','ctaBot','footBot'].forEach(id => { const a = $('#'+id); if(a) a.addEventListener('click', ()=>track('bot_click')); });
+      ['heroChannel','ctaChannel','footChannel'].forEach(id => { const a = $('#'+id); if(a) a.addEventListener('click', ()=>track('channel_click')); });
+
+      setYear();
+    })();
+  </script>
+</body>
+</html>
